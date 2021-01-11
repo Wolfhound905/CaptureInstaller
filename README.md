@@ -16,7 +16,7 @@ CaptureInstaller is a user friendly installer for [AmongUsCapture](https://githu
 ## Usage
 
 1. Click the blue button above or download `CaptureInstaller.bat` in the [releases](https://github.com/Wolfhound905/CaptureInstaller/releases/latest/).
-2. Your browser may say this file can be harmful for you device, press keep file or whatever is asked to keep the file on your browser. ([Edge](https://docs.google.com/document/d/1-JiCfXqoax9iC-h5TMiB2gnR8LLvB1tIB_lt-FGYeZY/view))
+2. Your browser may say this file can be harmful for you device, press keep file or whatever is asked to keep the file on your browser. ([Edge](https://docs.google.com/document/d/1-JiCfXqoax9iC-h5TMiB2gnR8LLvB1tIB_lt-FGYeZY/view), [Chrome](), [Firefox]())
 3. Once you have the CaptureInstaller.bat double click to run the file and a Windows Smart Screen message may pop up, if so click `More Info` and `Run Anyway` [example](https://media.discordapp.net/attachments/780435741650059268/798023233186168863/smartscreen.png)
 4. .NET 5 Desktop Runtime will start to install and you will be prompted to press `Allow` once it has been installed. Then the rest is done for you!
 
