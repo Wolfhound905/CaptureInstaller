@@ -1,3 +1,9 @@
+<a href="https://automute.us">
+<img alt="Banner" src="https://github.com/wolfhound905/captureinstaller/blob/main/banner.png">
+</a>
+
+# 
+
 CaptureInstaller is a user friendly installer for [AmongUsCapture](https://github.com/denverquane/amonguscapture) and [.NET 5 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/5.0#runtime-desktop-5.0.1) 
 
 # Installation
