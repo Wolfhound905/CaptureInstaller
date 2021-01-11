@@ -10,7 +10,7 @@ CaptureInstaller is a user friendly installer for [AmongUsCapture](https://githu
 
 <h4>Download the latest version of the CaptureInstaller here:
 <a href="https://github.com/Wolfhound905/CaptureInstaller/releases/latest/download/CaptureInstaller.bat" target="_blank">
-<img alt="GitHub release" src="https://img.shields.io/github/v/release/wolfhound905/captureinstaller">
+<img alt="GitHub release" src="https://img.shields.io/github/v/release/wolfhound905/captureinstaller?color=blue&label=download&style=flat-square">
 </a></h4>
 
 ## Usage
