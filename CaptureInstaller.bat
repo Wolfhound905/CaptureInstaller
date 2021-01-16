@@ -1,6 +1,6 @@
+powershell -window hidden -command ""
 @Echo Off
 Mode 80,3 & color 0A
-powershell -window hidden -command ""
 
 Set NETdownloadLink=https://download.visualstudio.microsoft.com/download/pr/c6a74d6b-576c-4ab0-bf55-d46d45610730/f70d2252c9f452c2eb679b8041846466/windowsdesktop-runtime-5.0.1-win-x64.exe
 Set CAPTUREdownloadlink=https://cdn.discordapp.com/attachments/759195945044017234/797269630196383824/AUCapture-WPF_Framework_Dependant.exe
@@ -13,22 +13,22 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
 ) 
 REM -----------
 
->nul cmd /c "dotnet --list-runtimes" > "desktopRuntimes.txt"
->nul find "Microsoft.WindowsDesktop.App 5.0.1" desktopRuntimes.txt && (
-  >nul del "desktopRuntimes.txt"
+cmd /c "dotnet --list-runtimes" > "%TEMP%\desktopRuntimes.txt"
+find "Microsoft.WindowsDesktop.App 5.0.1" %TEMP%\desktopRuntimes.txt && (
+  del "%TEMP%\desktopRuntimes.txt"
   REM .Net Runtime Already installed
   goto checkForCapture
   
 ) || (
-  >nul del "desktopRuntimes.txt"
+  del "%TEMP%\desktopRuntimes.txt"
   REM .Runtime Not installed
   goto checkSumNetRuntime
 )
 
 REM ―――――― Check Sums
 :checkSumNetRuntime
->nul set "RECEIVED=" & for /F "skip=1 delims=" %%H in ('
-    2^> nul CertUtil -hashfile "windowsdesktop-runtime-5.0.1-win-x64.exe" md5
+set "RECEIVED=" & for /F "skip=1 delims=" %%H in ('
+    2^> nul CertUtil -hashfile "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe" md5
 ') do if not defined RECEIVED set "RECEIVED=%%H"
 if "%NET5HASH%"=="%RECEIVED%" (
     REM Correct hash
@@ -59,30 +59,30 @@ cls
 call :colorEcho 0A "        ---Downloading .NET 5 Desktop Runtime Installer (dependency)---"
 echo.
 echo.
-curl -# "%NETdownloadLink%" -o "./windowsdesktop-runtime-5.0.1-win-x64.exe"
+curl -# "%NETdownloadLink%" -o "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe"
 goto checkSumNetRuntime
 
 :launchNetRuntime
->nul powershell -window minimized -command ""
-curl -LJOs "https://github.com/Wolfhound905/CaptureInstaller/releases/latest/download/resetvars.vbs"
->nul start "" "./windowsdesktop-runtime-5.0.1-win-x64.exe"
+powershell -window minimized -command ""
+curl -LJs "https://github.com/Wolfhound905/CaptureInstaller/releases/download/v1.0.0/resetvars.vbs" -o "%TEMP%\resetvars.vbs"
+start "" "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe"
 goto detectIfdoneInstall
 
 :detectIfdoneInstall
->nul cmd /c "dotnet --list-runtimes" > "desktopRuntimes.txt"
->nul find "Microsoft.WindowsDesktop.App 5.0.1" desktopRuntimes.txt && (
+cmd /c "dotnet --list-runtimes" > "%TEMP%\desktopRuntimes.txt"
+find "Microsoft.WindowsDesktop.App 5.0.1" %TEMP%\desktopRuntimes.txt && (
   REM .NET 5 is done installing
-  >nul del "desktopRuntimes.txt"
-  >nul taskkill /im "windowsdesktop-runtime-5.0.1-win-x64.exe" /f
-  >nul del "windowsdesktop-runtime-5.0.1-win-x64.exe"
-  >nul del "resetvars.vbs"
+  del "%TEMP%\desktopRuntimes.txt"
+  taskkill /im "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe" /f
+  del "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe"
+  del "%TEMP%\resetvars.vbs"
   goto checkForCapture
 ) || (
   REM Repeat install check
-  >nul del "desktopRuntimes.txt"
-  >nul Timeout 2
-  >nul %~dp0resetvars.vbs
-  call "%TEMP%\CaptureInstaller.bat"
+  del "%TEMP%\desktopRuntimes.txt"
+  Timeout 2
+  %~dp0resetvars.vbs
+  "%TEMP%\CaptureInstaller.bat"
   goto detectIfdoneInstall
 )
 
@@ -113,3 +113,4 @@ del "%~2" > nul 2>&1i
 REM --------
 
 :EOF
+exit
