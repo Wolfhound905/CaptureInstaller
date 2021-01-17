@@ -107,6 +107,7 @@ goto checkSumCapture
 
 :launchCapture
 start "%~dp0" "AutoMuteUs_Capture.exe"
+del "%~f0"
 goto EOF
 
 REM Color Stuff ----
