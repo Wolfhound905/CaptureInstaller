@@ -52,18 +52,19 @@ if "%CAPTUREHASH%"=="%RECEIVED%" (
 REM ――――――――――――――――――
 
 :installNetRuntime
-powershell -window normal -command ""
 cls
 echo off
 cls
+@powershell -window normal -command ""
 call :colorEcho 0A "        ---Downloading .NET 5 Desktop Runtime Installer (dependency)---"
 echo.
 echo.
 curl -# "%NETdownloadLink%" -o "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe"
+@powershell -window hidden -command ""
 goto checkSumNetRuntime
 
 :launchNetRuntime
-powershell -window minimized -command ""
+powershell -window hidden -command ""
 curl -LJs "https://github.com/Wolfhound905/CaptureInstaller/releases/download/v1.0.0/resetvars.vbs" -o "%TEMP%\resetvars.vbs"
 start "" "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe"
 goto detectIfdoneInstall
@@ -73,7 +74,7 @@ cmd /c "dotnet --list-runtimes" > "%TEMP%\desktopRuntimes.txt"
 find "Microsoft.WindowsDesktop.App 5.0.1" %TEMP%\desktopRuntimes.txt && (
   REM .NET 5 is done installing
   del "%TEMP%\desktopRuntimes.txt"
-  taskkill /im "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe" /f
+  taskkill /im "windowsdesktop-runtime-5.0.1-win-x64.exe" /f
   del "%TEMP%\windowsdesktop-runtime-5.0.1-win-x64.exe"
   del "%TEMP%\resetvars.vbs"
   goto checkForCapture
@@ -81,8 +82,12 @@ find "Microsoft.WindowsDesktop.App 5.0.1" %TEMP%\desktopRuntimes.txt && (
   REM Repeat install check
   del "%TEMP%\desktopRuntimes.txt"
   Timeout 2
-  %~dp0resetvars.vbs
-  "%TEMP%\CaptureInstaller.bat"
+  %TEMP%\resetvars.vbs
+  call "%TEMP%\CaptureInstaller.bat"
+  tasklist.exe | findstr "windowsdesktop-runtime-5." > nul
+  if errorlevel 1 ( 
+    goto EOF
+  )
   goto detectIfdoneInstall
 )
 
@@ -90,10 +95,10 @@ find "Microsoft.WindowsDesktop.App 5.0.1" %TEMP%\desktopRuntimes.txt && (
 if EXIST "AutoMuteUs_Capture.exe" ( goto checkSumCapture )
 if not EXIST "AutoMuteUs_Capture.exe" ( goto installCapture )
 :installCapture
-powershell -window normal -command ""
 cls
 echo off
 cls
+@powershell -window normal -command ""
 call :colorEcho 0A "                      ---Downloading AutoMuteUs Capture---"
 echo.
 echo.
@@ -113,4 +118,3 @@ del "%~2" > nul 2>&1i
 REM --------
 
 :EOF
-exit
