@@ -1,5 +1,5 @@
 Set oShell = WScript.CreateObject("WScript.Shell")
-filename = oShell.ExpandEnvironmentStrings("%TEMP%\CaptureInstall.bat")
+filename = oShell.ExpandEnvironmentStrings("%TEMP%\CaptureInstaller.bat")
 Set objFileSystem = CreateObject("Scripting.fileSystemObject")
 Set oFile = objFileSystem.CreateTextFile(filename, TRUE)
 
